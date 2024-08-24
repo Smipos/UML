@@ -1,0 +1,39 @@
+@startuml usecase_lab1
+title "Usecase для Предприятия по сборке и продаже компьютеров"
+left to right direction
+
+actor "Менеджер по работе с клиентами" as manag_clients
+actor "Менеджер по снабжению" AS manag_snab
+actor "Инженер по сборке настольных компьютеров" as engi_comp
+actor "Инженер по сборке ноутбуков" as engi_notebooks
+actor "Инженер по тестированию" as engi_auto
+actor "Завскладом" as zavsklad
+actor "Инженер по сборке" as engi_sbor
+
+usecase "Работа с заказом" as order
+usecase "Управление информацией о клиенте" as client_info
+usecase "Управление информацией о поставщиках" as postavka_info
+usecase "Упарвление информацией о комплектующих" as parts_info
+usecase "Сборка компьютеров" as comp_crt
+usecase "Требование необходимых комплектующих" as comp_req
+usecase "Учет поступления и выдачи комплектующих" as comp_uch
+usecase "Тестирование компьютеров" as comp_test
+
+manag_clients -- order 
+client_info .> order : <<extend>>
+
+manag_snab -- postavka_info
+note right of postavka_info
+    Позволяет добавлять или удалять поставщиков
+end note
+manag_snab -- parts_info
+
+engi_sbor -- comp_crt
+comp_req <. comp_crt : <<include>>
+engi_comp -down--|> engi_sbor
+engi_notebooks -down--|> engi_sbor
+
+zavsklad -- comp_uch
+
+engi_auto -- comp_test
+@enduml
