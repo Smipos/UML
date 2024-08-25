@@ -1,0 +1,56 @@
+@startuml class_lab2
+title "Диаграмма классов"
+left to right direction
+allowmixing
+
+class "Client" {
+    fio
+    address
+    phoneNum
+    addClient()
+    deleteClient()
+    getInfo()
+} 
+
+class "Product" {
+    productName
+    manufacturer
+    price
+    description
+    addNewProduct()
+    deleteProduct()
+    getProductInfo()
+}
+
+package "OrderPack" {
+    class "Order" {
+        orderNum
+        orderDate
+        orderCompleteDate
+        newOrderCreate()
+        addOrderInfo()
+        getOrderInfo()
+    }
+
+    class "OrderStructure" {
+        pvzNum
+        productCount
+        orderPrice
+        createOrderRow()
+        addRowInfo()
+        getRowInfo()
+    }
+
+    boundary "workingOrderParams"
+    boundary "addNewOrder"
+    control "orderManager"
+}
+
+Client "1" -- "1..*" Order : оформляет
+OrderStructure "1..*" --* "1" Order: входит в
+Product "1" --o "1..*" OrderStructure
+addNewOrder "1" --o "1" workingOrderParams
+
+addNewOrder "1" --> "1"  orderManager
+orderManager "1" --> "1..*" Order
+@enduml
