@@ -35,7 +35,7 @@
 
 **Код**:
 
-```plantumlcode
+```plantuml
 @startuml usecase_lab1
 title "Usecase для Предприятия по сборке и продаже компьютеров"
 left to right direction
@@ -143,7 +143,7 @@ engi_auto -- comp_test
 
 **Код**:
 
-```plantumlcode
+```plantuml
 @startuml class_lab2
 title "Диаграмма классов"
 left to right direction
