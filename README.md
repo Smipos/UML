@@ -32,6 +32,8 @@
 **Диаграмма:**
 ![](Photos/1_usecase.png)
 
+**Код**:
+
 ```plantumlcode
 @startuml usecase_lab1
 title "Usecase для Предприятия по сборке и продаже компьютеров"
@@ -71,5 +73,115 @@ engi_notebooks -down--|> engi_sbor
 zavsklad -- comp_uch
 
 engi_auto -- comp_test
+@enduml
+```
+
+## Лабораторная работа 2. Создание диаграммы классов.
+
+### Задание: 
+
+Создать диаграмму классов для определенного прецедента из лабораторной работы №1, задав атрибуты и операции класса.
+
+Первым создаваемым классом будет класс «Клиент», в котором будут содержаться следующие атрибуты: 
+- ИМЯ (ФИО клиента); 
+- АДРЕС (адрес клиента); 
+- ТЕЛЕФОН (номер телефона клиента); 
+Операции: 
+- ДОБАВИТЬ КЛИЕНТА; 
+- УДАЛИТЬ КЛИЕНТА; 
+- ПОЛУЧИТЬ ИНФОРМАЦИЮ. 
+
+Класс «Заказ». 
+Атрибуты: 
+- НОМЕР ЗАКАЗА; 
+- ДАТА ОФОРМЛЕНИЯ; 
+- ДАТА ВЫПОЛНЕНИЯ. 
+Операции:
+- СОЗДАНИЕ НОВОГО ЗАКАЗА;
+- ЗАНЕСТИ ИНФОРМАЦИЮ; 
+- ПОЛУЧИТЬ ИНФОРМАЦИЮ. 
+
+Класс «Комплектующее изделие». 
+Атрибуты: 
+- НАИМЕНОВАНИЕ; 
+- ПРОИЗВОДИТЕЛЬ; 
+- ЦЕНА; 
+- ОПИСАНИЕ. 
+Операции: 
+- ДОБАВИТЬ НОВОЕ КОМПЛЕКТУЮЩЕЕ; 
+- УДАЛИТЬ КОМПЛЕКТУЮЩЕЕ; 
+- ПОЛУЧИТЬ ИНФОРМАЦИЮ (о комплектующем). 
+
+Класс «Состав заказа». 
+Атрибуты: 
+- НОМЕР ПУНКТА ЗАКАЗА; 
+- КОЛИЧЕСТВО КОМПЛЕКТУЮЩИХ; 
+- ЦЕНА. 
+Операции: 
+- СОЗДАТЬ СТРОКУ ЗАКАЗА; 
+- ДОБАВИТЬ ИНФОРМАЦИЮ (о строке); 
+- ПОЛУЧИТЬ ИНФОРМАЦИЮ (о строке).
+
+**Диаграмма**:
+![](Photos/2_class.png)
+
+**Код**:
+
+```plantumlcode
+@startuml class_lab2
+title "Диаграмма классов"
+left to right direction
+allowmixing
+
+class "Client" {
+    fio
+    address
+    phoneNum
+    addClient()
+    deleteClient()
+    getInfo()
+}
+
+class "Product" {
+    productName
+    manufacturer
+    price
+    description
+    addNewProduct()
+    deleteProduct()
+    getProductInfo()
+}
+
+package "OrderPack" {
+    class "Order" {
+        orderNum
+        orderDate
+        orderCompleteDate
+        newOrderCreate()
+        addOrderInfo()
+        getOrderInfo()
+    }
+
+    class "OrderStructure" {
+        pvzNum
+        productCount
+        orderPrice
+        createOrderRow()
+        addRowInfo()
+        getRowInfo()
+    }
+    
+    boundary "workingOrderParams"
+    boundary "addNewOrder"
+    control "orderManager"
+}
+
+Client "1" -- "1..*" Order : оформляет
+OrderStructure "1..*" --* "1" Order: входит в
+Product "1" --o "1..*" OrderStructure
+addNewOrder "1" --o "1" workingOrderParams
+
+addNewOrder "1" --> "1"  orderManager
+orderManager "1" --> "1..*" Order
 @enduml
 ```
