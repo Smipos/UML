@@ -359,3 +359,135 @@ repeat while (Обработать заказ?) is (да) not (нет)
 stop
 @enduml
 ```
+
+
+## Лабораторная работа 4. Создание диаграммы последовательностей UML.
+
+### Задание:
+
+Создать диаграмму последовательности и кооперации для одного из сценариев любого прецедента из лабораторной работы №1.
+
+Сценарий «Добавить заказ» и прецедент «Работа с заказом». Для наглядности и удобства построения примера выбран один случай развития событий – пользователь корректно ввел все данные, которые в последующем сохранятся в базе данных.
+
+
+| №   | Участник – отправитель сообщения | Участник – получать сообщения | Название сообщения               |
+| --- | -------------------------------- | ----------------------------- | -------------------------------- |
+| 1   | Менеджер по работе с клиентами   | Параметры работы с заказом    | Ввод пароля                      |
+| 2   | Параметры работы с заказом       | Параметры работы с заказом    | Проверка пароля                  |
+| 3   | Менеджер по работе с клиентами   | Параметры работы с заказом    | Выбор операции «Добавить заказ»  |
+| 4   | Параметры работы с заказом       | Добавление нового заказа      | Отображение полей ввода          |
+| 5   | Менеджер по работе с клиентами   | Добавление нового заказа      | Выбор типа компьютера            |
+| 6   | Добавление нового заказа         | Менеджер по работе с заказами | Получение списка клиентов        |
+| 7   | Менеджер по работе с заказами    | Клиент                        | Получение списка клиентов        |
+| 8   | Клиент                           | Добавление нового заказа      | Список клиентов                  |
+| 9   | Добавление нового заказа         | Добавление нового заказа      | Отображение списка клиентов      |
+| 10  | Менеджер по работе с клиентами   | Добавление нового заказа      | Выбор клиента                    |
+| 11  | Добавление нового заказа         | Менеджер по работе с заказом  | Получение списка комплектующих   |
+| 12  | Менеджер по работе с заказом     | Комплектующее изделие         | Получение списка комплектующих   |
+| 13  | Комплектующее изделие            | Добавление нового заказа      | Список комплектующих             |
+| 14  | Добавление нового заказа         | Добавление нового заказа      | Отображение списка комплектующих |
+| 15  | Менеджер по работе с клиентами   | Добавление нового заказа      | Выбор комплектующих              |
+| 16  | Менеджер по работе с клиентами   | Добавление нового заказа      | Сохранить заказ                  |
+| 17  | Добавление нового заказа         | Менеджер по работе с заказом  | Передача управления              |
+| 18  | Менеджер по работе с заказом     | Заказ                         | Сохранение                       |
+
+**Диаграмма**:
+
+![](Photos/4_sequence.png)
+
+**Код**:
+
+```plantuml
+@startuml sequence_lab_4
+title "Диаграмма последовательности"
+
+actor "Менеджер по работе с клиентами" as managClient
+boundary "Параметры работы с заказом" as ordParams
+control "Добавление нового заказа" as addNewOrder
+actor "Менеджер по работе с заказом" as managOrd
+participant "Заказ" as order
+participant "Клиент" as client
+participant "Комплектующее изделие" as complect
+
+activate managClient
+managClient -> ordParams : Ввод пароля
+deactivate managClient
+
+activate ordParams
+ordParams -> ordParams : Проверка пароля
+
+activate ordParams
+deactivate ordParams
+
+return Пароль проверен
+
+activate managClient
+managClient -> ordParams : Выбор операции "Добавить заказ"
+deactivate managClient
+
+activate ordParams
+ordParams -> addNewOrder : Отображение полей ввода
+
+activate addNewOrder
+deactivate ordParams
+
+activate managClient
+managClient -> addNewOrder : Выбор типа компьютера
+
+addNewOrder -> managOrd : Получение списка клиентов
+deactivate addNewOrder
+
+activate managOrd
+managOrd -> client : Получение списка клиентов
+deactivate managOrd
+
+activate client
+client --> addNewOrder : Список клиентов
+deactivate client
+
+activate addNewOrder
+addNewOrder -> addNewOrder : Отображение списка клиентов
+
+activate addNewOrder
+deactivate addNewOrder
+
+deactivate addNewOrder
+
+managClient -> addNewOrder : Выбор клиента
+
+activate addNewOrder
+addNewOrder -> managOrd : Получение списка комплектующих
+deactivate addNewOrder
+
+activate managOrd
+deactivate addNewOrder
+
+managOrd -> complect : Получение списка комплектующих
+
+deactivate managOrd
+activate complect
+
+complect --> managOrd : Список комплектующих
+
+activate managOrd
+deactivate complect
+
+managOrd -> managOrd : Отображение списка комплектующих
+
+activate managOrd
+deactivate managOrd
+
+managClient -> managOrd : Выбор комплектующих
+managClient -> managOrd : Сохранить заказ
+managOrd -> order : Передача управления
+deactivate managOrd
+
+activate order
+order -> client : Сохранение
+deactivate order
+
+activate client
+client --> managClient : Заказ сохранен
+deactivate client
+@enduml
+```
