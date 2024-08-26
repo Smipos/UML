@@ -1,0 +1,90 @@
+@startuml sequence_lab_4
+title "Диаграмма последовательности"
+
+actor "Менеджер по работе с клиентами" as managClient
+boundary "Параметры работы с заказом" as ordParams
+control "Добавление нового заказа" as addNewOrder
+actor "Менеджер по работе с заказом" as managOrd
+participant "Заказ" as order
+participant "Клиент" as client
+participant "Комплектующее изделие" as complect 
+
+
+activate managClient 
+managClient -> ordParams : Ввод пароля
+deactivate managClient
+
+activate ordParams
+ordParams -> ordParams : Проверка пароля
+activate ordParams 
+deactivate ordParams
+
+return Пароль проверен
+
+activate managClient 
+managClient -> ordParams : Выбор операции "Добавить заказ"
+deactivate managClient
+
+activate ordParams
+ordParams -> addNewOrder : Отображение полей ввода
+activate addNewOrder
+deactivate ordParams 
+
+activate managClient
+managClient -> addNewOrder : Выбор типа компьютера
+
+addNewOrder -> managOrd : Получение списка клиентов
+deactivate addNewOrder
+
+activate managOrd 
+managOrd -> client : Получение списка клиентов
+deactivate managOrd
+
+activate client
+client --> addNewOrder : Список клиентов
+deactivate client
+activate addNewOrder
+
+addNewOrder -> addNewOrder : Отображение списка клиентов
+activate addNewOrder
+deactivate addNewOrder
+
+deactivate addNewOrder
+
+managClient -> addNewOrder : Выбор клиента
+
+activate addNewOrder
+addNewOrder -> managOrd : Получение списка комплектующих
+deactivate addNewOrder
+
+activate managOrd
+deactivate addNewOrder
+
+managOrd -> complect : Получение списка комплектующих
+deactivate managOrd
+activate complect 
+
+
+complect --> managOrd : Список комплектующих
+activate managOrd
+deactivate complect
+
+managOrd -> managOrd : Отображение списка комплектующих
+activate managOrd
+deactivate managOrd
+
+managClient -> managOrd : Выбор комплектующих
+
+managClient -> managOrd : Сохранить заказ
+
+managOrd -> order : Передача управления
+
+deactivate managOrd
+activate order
+order -> client : Сохранение
+deactivate order
+activate client
+
+client --> managClient : Заказ сохранен
+deactivate client
+@enduml
